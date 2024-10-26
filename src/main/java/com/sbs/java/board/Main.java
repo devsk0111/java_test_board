@@ -2,6 +2,10 @@ package com.sbs.java.board;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("승근이는 드디어 다시 코딩 시작 한대요");
+
+        System.out.println("== Start Dashboard ==");
+        System.out.println("치지직...");
+        System.out.println("두두둥...");
+        System.out.println("== Exit Dashboard ==");
     }
 }
