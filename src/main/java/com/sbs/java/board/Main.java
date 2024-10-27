@@ -4,14 +4,13 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        int lastArticleId = 0;
         Scanner sc = new Scanner(System.in);
         System.out.println("== Start Dashboard ==");
 
         while(true) {
             System.out.print("명령: ");
             String cmd = sc.nextLine();
-
-            int id = 1;
 
             if (cmd.equalsIgnoreCase("usr/article/write")) {
                 System.out.println("== 게시물 작성 ==");
@@ -21,8 +20,9 @@ public class Main {
                 System.out.println("내용 : ");
                 String content = sc.nextLine();
 
+                int id = ++lastArticleId;
+
                 System.out.printf("%d 번째 계시물, '%s'의 내용이 저장 되었습니다\n\n", id, title);
-                id++;
 
             }
 
