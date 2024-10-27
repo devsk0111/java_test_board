@@ -22,7 +22,13 @@ public class Main {
 
                 int id = ++lastArticleId;
 
-                System.out.printf("%d 번째 계시물, '%s'의 내용이 저장 되었습니다\n\n", id, title);
+                Article article = new Article(); // 게시물 객체 생성
+                article.id = id;
+                article.title = title;
+                article.content = content;
+
+                System.out.printf("%d번째 계시물, '%s'의 내용이 저장 되었습니다\n", article.id, article.title);
+                System.out.println("생성된 게시물 객체 : " + article);
 
             }
 
@@ -38,4 +44,10 @@ public class Main {
         System.out.println("== Exit Dashboard ==");
         sc.close();
     }
+}
+
+class Article {
+    int id;
+    String title;
+    String content;
 }
