@@ -12,7 +12,7 @@ public class Main {
             System.out.print("명령: ");
             String cmd = sc.nextLine();
 
-            if (cmd.equalsIgnoreCase("usr/article/write")) {
+            if (cmd.equalsIgnoreCase("write")) {
                 System.out.println("== 게시물 작성 ==");
                 System.out.print("제목 : ");
                 String title = sc.nextLine();
@@ -27,7 +27,7 @@ public class Main {
                 article.title = title;
                 article.content = content;
 
-                System.out.printf("%d번째 계시물, '%s'의 내용이 저장 되었습니다\n", article.id, article.title);
+                System.out.printf("%d번째 계시물, \"%s\"의 내용이 저장 되었습니다\n", article.id, article.title);
                 System.out.println("생성된 게시물 객체 : " + article);
 
             }
@@ -46,8 +46,13 @@ public class Main {
     }
 }
 
-class Article {
+class Article { //extends Object
     int id;
     String title;
     String content;
+
+    @Override
+    public String toString() {
+        return "{id : %d, title: \"%s\"}".formatted(id, title);
+    }
 }
