@@ -1,11 +1,23 @@
 package com.sbs.java.board;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         int lastArticleId = 0;
         Article lastArticle = null;
+
+        List<Article> articles = new ArrayList<>();
+
+        // 테스트 게시물
+
+//        articles.add(new Article(1, "제목 1", "내용 1"));
+//        articles.add(new Article(1, "제목 2", "내용 2"));
+//        articles.add(new Article(1, "제목 3", "내용 3"));
+
+
         Scanner sc = new Scanner(System.in);
         System.out.println("== Start Dashboard ==");
 
@@ -31,18 +43,37 @@ public class Main {
 
             }
 
-            else if (cmd.equalsIgnoreCase("detail")) {
-              Article article = lastArticle;
+//            else if (cmd.equalsIgnoreCase("detail")) {
+//              Article article = articles;
+//
+//                if (article == null) { //유효성 검사
+//                    System.out.println("게시물 존재하지 않네요..?");
+//                    continue; // 밑에 내용 스킵
+//                }
+//                System.out.println("== 게시물 상세보기 ==");
+//
+//                System.out.printf("게시물 id : %d\n", article.id);
+//                System.out.printf("게시물 title : %s\n", article.title);
+//                System.out.printf("게시물 content : %s\n", article.content);
+//            }
 
-                if (article == null) { //유효성 검사
-                    System.out.println("게시물 존재하지 않네요..?");
-                    continue; // 밑에 내용 스킵
+            else if (cmd.equalsIgnoreCase("list")) {
+
+                if (articles.isEmpty()) {
+                    System.out.println("게시물 업슈");
+                    continue;
                 }
-                System.out.println("== 게시물 상세보기 ==");
 
-                System.out.printf("게시물 id : %d\n", article.id);
-                System.out.printf("게시물 title : %s\n", article.title);
-                System.out.printf("게시물 content : %s\n", article.content);
+                System.out.println("== 게시물 리스트 ==");
+                System.out.println("---------------------");
+                System.out.println("|  번호  |   제목     |");
+                for (int i = 0; i < articles.size(); i++) {
+                    Article article = articles.get(i);
+                    System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
+                }
+                System.out.println("---------------------");
+
+
             }
 
             else if (cmd.equalsIgnoreCase("exit")) {
