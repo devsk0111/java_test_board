@@ -22,10 +22,7 @@ public class Main {
 
                 int id = ++lastArticleId;
 
-                Article article = new Article(); // 게시물 객체 생성
-                article.id = id;
-                article.title = title;
-                article.content = content;
+                Article article = new Article(id, title, content); // 게시물 객체 생성
 
                 System.out.printf("%d번째 계시물, \"%s\"의 내용이 저장 되었습니다\n", article.id, article.title);
                 System.out.println("생성된 게시물 객체 : " + article);
@@ -50,6 +47,12 @@ class Article { //extends Object
     int id;
     String title;
     String content;
+
+    Article(int id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
 
     @Override
     public String toString() {
