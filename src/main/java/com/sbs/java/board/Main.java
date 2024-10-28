@@ -12,13 +12,14 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        List<Article> articles = new ArrayList<>();
+        testData(articles);
         int lastArticleId = 0;
         Article lastArticle = null;
 
-
-        List<Article> articles = new ArrayList<>();
-
-        testData(articles);
+        if(!articles.isEmpty()) {
+            lastArticleId = articles.get(articles.size() - 1).id;
+        }
 
         Scanner sc = new Scanner(System.in);
         System.out.println("== Start Dashboard ==");
@@ -40,24 +41,26 @@ public class Main {
                 Article article = new Article(id, title, content);// 게시물 객체 생성
                 lastArticle = article;
 
+                articles.add(article);
+
                 System.out.printf("%d번째 계시물, \"%s\"의 내용이 저장 되었습니다\n", article.id, article.title);
                 System.out.println("생성된 게시물 객체 : " + article);
 
             }
 
-//            else if (cmd.equalsIgnoreCase("detail")) {
-//              Article article = articles;
-//
-//                if (article == null) { //유효성 검사
-//                    System.out.println("게시물 존재하지 않네요..?");
-//                    continue; // 밑에 내용 스킵
-//                }
-//                System.out.println("== 게시물 상세보기 ==");
-//
-//                System.out.printf("게시물 id : %d\n", article.id);
-//                System.out.printf("게시물 title : %s\n", article.title);
-//                System.out.printf("게시물 content : %s\n", article.content);
-//            }
+            else if (cmd.equalsIgnoreCase("detail")) {
+                if (lastArticle == null) { //유효성 검사
+                    System.out.println("게시물 존재하지 않네요..?");
+                    continue; // 밑에 내용 스킵
+                }
+                Article article = lastArticle;
+
+                System.out.println("== 게시물 상세보기 ==");
+
+                System.out.printf("게시물 id : %d\n", article.id);
+                System.out.printf("게시물 title : %s\n", article.title);
+                System.out.printf("게시물 content : %s\n", article.content);
+            }
 
             else if (cmd.equalsIgnoreCase("list")) {
 
