@@ -1,32 +1,33 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
         // url로 &단위로 분석하게 된다.
 
-        String queryString = "a=1&b=2&c=3&d=400&e=500000";
+        String queryString = "id=meme&age=32&occupation=developer&pay=400&stress=500000";
         String[] bits = queryString.split("&");
 
-        List<String> paramNames = new ArrayList<>();
-        List<Integer> paramValues = new ArrayList<>();
+        Map<String, String> params = new LinkedHashMap<>(); //HashMap vs LinkedHashMap : 순서 보장, but 크게 상관 없다
 
         for(String bit : bits) {
             String[] bitBits = bit.split("=");
-            String paramName = bitBits[0];
-            String paramValue = bitBits[1];
-
-            paramNames.add(paramName);
-            paramValues.add(Integer.parseInt(paramValue));
-
+            params.put(bitBits[0], bitBits[1]);
         }
 
-        for(int i = 0; i < paramNames.size(); i++) {
-            String paramName = paramNames.get(i);
-            int paramValue = paramValues.get(i);
 
-            System.out.printf("%s : %d\n",  paramName, paramValue);
+        System.out.println("==원하는 것을 이렇게 가져 오겠습니다 ==");
+        System.out.printf("나이 : %d\n", Integer.parseInt(params.get("age")));
+        System.out.printf("ID : %s\n", params.get("id"));
+
+        System.out.println("");
+
+        System.out.println("== 반복문으로 ==");
+
+        for(String paramName : params.keySet()) {
+            String paramValue = params.get(paramName);
+
+            System.out.printf("%s : %s\n", paramName, paramValue);
         }
 
     }
