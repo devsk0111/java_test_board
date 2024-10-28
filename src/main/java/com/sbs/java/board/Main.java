@@ -15,7 +15,6 @@ public class Main {
         List<Article> articles = new ArrayList<>();
         testData(articles);
         int lastArticleId = 0;
-        Article lastArticle = null;
 
         if(!articles.isEmpty()) {
             lastArticleId = articles.get(articles.size() - 1).id;
@@ -39,7 +38,6 @@ public class Main {
                 int id = ++lastArticleId;
 
                 Article article = new Article(id, title, content);// 게시물 객체 생성
-                lastArticle = article;
 
                 articles.add(article);
 
@@ -49,11 +47,13 @@ public class Main {
             }
 
             else if (cmd.equalsIgnoreCase("detail")) {
-                if (lastArticle == null) { //유효성 검사
+
+                if (articles.isEmpty()) { //유효성 검사
                     System.out.println("게시물 존재하지 않네요..?");
                     continue; // 밑에 내용 스킵
                 }
-                Article article = lastArticle;
+
+                Article article = articles.get(articles.size() - 1);
 
                 System.out.println("== 게시물 상세보기 ==");
 
