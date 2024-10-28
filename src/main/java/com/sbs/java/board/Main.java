@@ -5,18 +5,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    static void testData(List<Article> articles) {
+        articles.add(new Article(1, "제목 1", "내용 1"));
+        articles.add(new Article(1, "제목 2", "내용 2"));
+        articles.add(new Article(1, "제목 3", "내용 3"));
+    }
+
     public static void main(String[] args) {
         int lastArticleId = 0;
         Article lastArticle = null;
 
+
         List<Article> articles = new ArrayList<>();
 
-        // 테스트 게시물
-
-//        articles.add(new Article(1, "제목 1", "내용 1"));
-//        articles.add(new Article(1, "제목 2", "내용 2"));
-//        articles.add(new Article(1, "제목 3", "내용 3"));
-
+        testData(articles);
 
         Scanner sc = new Scanner(System.in);
         System.out.println("== Start Dashboard ==");
@@ -88,6 +90,7 @@ public class Main {
         System.out.println("== Exit Dashboard ==");
         sc.close();
     }
+
 }
 
 class Article { //extends Object
