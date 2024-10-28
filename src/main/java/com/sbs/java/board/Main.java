@@ -7,8 +7,8 @@ import java.util.Scanner;
 public class Main {
     static void testData(List<Article> articles) {
         articles.add(new Article(1, "제목 1", "내용 1"));
-        articles.add(new Article(1, "제목 2", "내용 2"));
-        articles.add(new Article(1, "제목 3", "내용 3"));
+        articles.add(new Article(2, "제목 2", "내용 2"));
+        articles.add(new Article(3, "제목 3", "내용 3"));
     }
 
     public static void main(String[] args) {
@@ -69,7 +69,7 @@ public class Main {
                 System.out.println("== 게시물 리스트 ==");
                 System.out.println("---------------------");
                 System.out.println("|  번호  |   제목     |");
-                for (int i = 0; i < articles.size(); i++) {
+                for (int i = articles.size() -1 ; i >= 0 ; i--) {
                     Article article = articles.get(i);
                     System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
                 }
