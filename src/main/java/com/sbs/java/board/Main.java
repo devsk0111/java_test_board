@@ -1,5 +1,6 @@
 package com.sbs.java.board;
 
+import java.sql.Array;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -115,17 +116,11 @@ public class Main {
                 System.out.println("|  번호  |   제목     |");
 
                 if (orderByIdDesc) { // idAsc가 없으면 기본값인 idDesc(내림차순)
-                    for (int i = sortedArticles.size() -1 ; i >= 0 ; i--) {
-                        Article article = sortedArticles.get(i);
-                        System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
-
-                    }
+                    sortedArticles = Util.reverseList(sortedArticles);
                 }
 
-                else {
-                    for(Article article : articles) {
-                        System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
-                    }
+                for(Article article : sortedArticles) {
+                    System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
                 }
 
                 System.out.println("---------------------");
@@ -215,4 +210,18 @@ class Util {
     static String getUrlPathFromUrl(String url) {
         return url.split("\\?", 2)[0];
     }
+
+    //이 함수는 원본리스트를 훼손하지 않고, 새 리스트를 만든다.
+    // 즉 정렬이 반대인 '복사'리스트를 만들어서 반환한다.
+
+    public static<T> List<T> reverseList(List<T> list) {
+        List<T> reverse = new ArrayList<>(list.size());
+
+        for (int i = list.size() - 1; i >= 0; i--) {
+            reverse.add(list.get(i));
+        }
+
+        return reverse;
+    }
 }
+
