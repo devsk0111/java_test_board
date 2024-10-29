@@ -48,7 +48,14 @@ public class Main {
 
             else if (rq.getUrlPath().equals("usr/articles/detail")) {
                 Map<String, String> params = rq.getParams();
-                int id = Integer.parseInt(params.get("id")); // int id는 가져오고 싶은 숫자를 가져온다
+
+                int id = 0;
+                try { // 유효성 검사하기 
+                    id = Integer.parseInt(params.get("id")); // int id는 가져오고 싶은 숫자를 가져온다
+                } catch (NumberFormatException e) {
+                    System.out.println("id를 정수 형태로 입력해주세요");
+                    continue;
+                }
 
                 if (articles.isEmpty()) { //유효성 검사
                     System.out.println("게시물 존재하지 않네요..?");
