@@ -91,13 +91,32 @@ public class Main {
                     orderByIdDesc = false;
                 }
 
+                // 검색 시작
+                List<Article> filteredArticles = articles;
+
+                if(params.containsKey("searchKeyword")) {
+                    String searchKeyword = params.get("searchKeyword");
+
+                    filteredArticles = new ArrayList<>();
+
+                    for (Article article : articles) {
+                        if(article.title.contains(searchKeyword) || article.content.contains(searchKeyword)) {
+                            filteredArticles.add(article);
+                        }
+                    }
+                }
+                // 검색 끝
+
+                List<Article> sortedArticles = filteredArticles;
+                // List<Article> sortedArticles = articles;
+
                 System.out.println("== 게시물 리스트 ==");
                 System.out.println("---------------------");
                 System.out.println("|  번호  |   제목     |");
 
                 if (orderByIdDesc) { // idAsc가 없으면 기본값인 idDesc(내림차순)
-                    for (int i = articles.size() -1 ; i >= 0 ; i--) {
-                        Article article = articles.get(i);
+                    for (int i = sortedArticles.size() -1 ; i >= 0 ; i--) {
+                        Article article = sortedArticles.get(i);
                         System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
 
                     }
