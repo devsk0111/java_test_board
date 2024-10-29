@@ -1,8 +1,6 @@
 package com.sbs.java.board;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     static void testData(List<Article> articles) {
@@ -27,7 +25,9 @@ public class Main {
             System.out.print("명령: ");
             String cmd = sc.nextLine();
 
-            if (cmd.equalsIgnoreCase("write")) {
+            Rq rq = new Rq(cmd);
+
+            if (rq.getUrlPath().equalsIgnoreCase("usr/articles/write")) {
                 System.out.println("== 게시물 작성 ==");
                 System.out.print("제목 : ");
                 String title = sc.nextLine();
@@ -46,7 +46,7 @@ public class Main {
 
             }
 
-            else if (cmd.equalsIgnoreCase("detail")) {
+            else if (rq.getUrlPath().equalsIgnoreCase("usr/articles/detail")) {
 
                 if (articles.isEmpty()) { //유효성 검사
                     System.out.println("게시물 존재하지 않네요..?");
@@ -62,7 +62,7 @@ public class Main {
                 System.out.printf("게시물 content : %s\n", article.content);
             }
 
-            else if (cmd.equalsIgnoreCase("list")) {
+            else if (rq.getUrlPath().equalsIgnoreCase("usr/articles/list")) {
 
                 if (articles.isEmpty()) {
                     System.out.println("게시물 업슈");
@@ -81,7 +81,7 @@ public class Main {
 
             }
 
-            else if (cmd.equalsIgnoreCase("exit")) {
+            else if (rq.getUrlPath().equalsIgnoreCase("exit")) {
 
                 break;
             }
@@ -110,5 +110,57 @@ class Article { //extends Object
     @Override
     public String toString() {
         return "{id : %d, title: \"%s\"}".formatted(id, title);
+    }
+}
+
+class Rq {
+    String url;
+    Map<String, String> params;
+    String urlPath;
+
+    Rq(String url) {
+        this.url = url;
+        this.params = Util.getParamsFromUrl(url);
+        this.urlPath = Util.getUrlPathFromUrl(url);
+    }
+
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public String getUrlPath() {
+        return urlPath;
+    }
+}
+
+class Util {
+    static Map<String, String> getParamsFromUrl(String queryString) {
+        Map<String, String> params = new LinkedHashMap<>();
+
+        // Split the URL into path and query parts
+        String[] split = queryString.split("\\?", 2); // Limit to 2 splits
+        if (split.length < 2) {
+            // No query string present, return empty map
+            return params;
+        }
+
+        String query = split[1];
+        String[] pairs = query.split("&");
+
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=", 2); // Limit to 2 splits to handle missing values
+            if (keyValue.length == 2) {
+                params.put(keyValue[0], keyValue[1]);
+            } else if (keyValue.length == 1) {
+                params.put(keyValue[0], "");
+            }
+        }
+
+        return params;
+    }
+
+    static String getUrlPathFromUrl(String url) {
+        return url.split("\\?", 2)[0];
     }
 }
