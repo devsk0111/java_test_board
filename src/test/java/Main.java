@@ -15,6 +15,8 @@ public class Main {
 
 class Rq {
     String url;
+    Map<String, String> params;
+    String urlPath;
 
     Rq(String url) {
         this.url = url;
@@ -22,11 +24,18 @@ class Rq {
 
 
     public Map<String, String> getParams() {
-        return Util.getParamsFromUrl(url);
+        if (params == null) {
+            params = Util.getParamsFromUrl(url);
+        }
+
+        return params;
     }
 
     public String getUrlPath() {
-        return Util.getUrlPathFromUrl(url);
+        if (urlPath == null) {
+            urlPath = Util.getUrlPathFromUrl(url);
+        }
+        return urlPath;
     }
 }
 
