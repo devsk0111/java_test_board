@@ -28,7 +28,7 @@ public class Main {
 
             Rq rq = new Rq(cmd);
 
-            if (rq.getUrlPath().equals("usr/articles/write")) {
+            if (rq.getUrlPath().equals("/usr/article/write")) {
                 System.out.println("== 게시물 작성 ==");
                 System.out.print("제목 : ");
                 String title = sc.nextLine();
@@ -47,7 +47,7 @@ public class Main {
 
             }
 
-            else if (rq.getUrlPath().equals("usr/articles/detail")) {
+            else if (rq.getUrlPath().equals("/usr/articles/detail")) {
                 Map<String, String> params = rq.getParams();
 
                 int id = 0;
@@ -77,55 +77,9 @@ public class Main {
                 System.out.printf("게시물 content : %s\n", article.content);
             }
 
-            else if (rq.getUrlPath().equals("usr/article/list")) {
+            else if (rq.getUrlPath().equals("/usr/article/list")) {
 
-                Map<String, String> params = rq.getParams();
-
-                boolean orderByIdDesc = true;
-
-                if (articles.isEmpty()) {
-                    System.out.println("게시물 업슈");
-                    continue;
-                }
-
-                if(params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
-                    orderByIdDesc = false;
-                }
-
-                // 검색 시작
-                List<Article> filteredArticles = articles;
-
-                if(params.containsKey("searchKeyword")) {
-                    String searchKeyword = params.get("searchKeyword");
-
-                    filteredArticles = new ArrayList<>();
-
-                    for (Article article : articles) {
-                        if(article.title.contains(searchKeyword) || article.content.contains(searchKeyword)) {
-                            filteredArticles.add(article);
-                        }
-                    }
-                }
-                // 검색 끝
-
-                List<Article> sortedArticles = filteredArticles;
-                // List<Article> sortedArticles = articles;
-
-                System.out.println("== 게시물 리스트 ==");
-                System.out.println("---------------------");
-                System.out.println("|  번호  |   제목     |");
-
-                if (orderByIdDesc) { // idAsc가 없으면 기본값인 idDesc(내림차순)
-                    sortedArticles = Util.reverseList(sortedArticles);
-                }
-
-                for(Article article : sortedArticles) {
-                    System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
-                }
-
-                System.out.println("---------------------");
-
-
+                actionUsrArticleList(rq, articles);
             }
 
             else if (rq.getUrlPath().equalsIgnoreCase("exit")) {
@@ -141,7 +95,60 @@ public class Main {
         sc.close();
     }
 
+    static void actionUsrArticleList(Rq rq, List<Article> articles) {
+
+        Map<String, String> params = rq.getParams();
+
+        boolean orderByIdDesc = true;
+
+        if (articles.isEmpty()) {
+            System.out.println("게시물 업슈");
+            return; // continue 대신, main 밖으로
+        }
+
+        if(params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+            orderByIdDesc = false;
+        }
+
+        // 검색 시작
+        List<Article> filteredArticles = articles;
+
+        if(params.containsKey("searchKeyword")) {
+            String searchKeyword = params.get("searchKeyword");
+
+            filteredArticles = new ArrayList<>();
+
+            for (Article article : articles) {
+                if(article.title.contains(searchKeyword) || article.content.contains(searchKeyword)) {
+                    filteredArticles.add(article);
+                }
+            }
+        }
+        // 검색 끝
+
+        List<Article> sortedArticles = filteredArticles;
+        // List<Article> sortedArticles = articles;
+
+        System.out.println("== 게시물 리스트 ==");
+        System.out.println("---------------------");
+        System.out.println("|  번호  |   제목     |");
+
+        if (orderByIdDesc) { // idAsc가 없으면 기본값인 idDesc(내림차순)
+            sortedArticles = Util.reverseList(sortedArticles);
+        }
+
+        for(Article article : sortedArticles) {
+            System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
+        }
+
+        System.out.println("---------------------");
+
+
+    }
 }
+
+
+
 
 class Article { //extends Object
     int id;
