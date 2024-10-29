@@ -27,7 +27,7 @@ public class Main {
 
             Rq rq = new Rq(cmd);
 
-            if (rq.getUrlPath().equalsIgnoreCase("usr/articles/write")) {
+            if (rq.getUrlPath().equals("usr/articles/write")) {
                 System.out.println("== 게시물 작성 ==");
                 System.out.print("제목 : ");
                 String title = sc.nextLine();
@@ -46,14 +46,21 @@ public class Main {
 
             }
 
-            else if (rq.getUrlPath().equalsIgnoreCase("usr/articles/detail")) {
+            else if (rq.getUrlPath().equals("usr/articles/detail")) {
+                Map<String, String> params = rq.getParams();
+                int id = Integer.parseInt(params.get("id")); // int id는 가져오고 싶은 숫자를 가져온다
 
                 if (articles.isEmpty()) { //유효성 검사
                     System.out.println("게시물 존재하지 않네요..?");
                     continue; // 밑에 내용 스킵
                 }
 
-                Article article = articles.get(articles.size() - 1);
+                if(id > articles.size() - 1) {
+                    System.out.println("해당 게시물 존재하지 않습니다");
+                    continue;
+                }
+
+                Article article = articles.get(id - 1);
 
                 System.out.println("== 게시물 상세보기 ==");
 
@@ -62,7 +69,7 @@ public class Main {
                 System.out.printf("게시물 content : %s\n", article.content);
             }
 
-            else if (rq.getUrlPath().equalsIgnoreCase("usr/articles/list")) {
+            else if (rq.getUrlPath().equals("usr/articles/list")) {
 
                 if (articles.isEmpty()) {
                     System.out.println("게시물 업슈");
