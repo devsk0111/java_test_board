@@ -3,28 +3,33 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        // url로 &단위로 분석하게 된다.
+        Map<String, String> params = Util.getParamsFromUrl("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&idName=박승근");
 
-        String queryString1 = "id=meme&age=32&occupation=developer&pay=400&stress=500000";
-        Map<String, String> params1 = Util.getParams(queryString1);
-
-        String queryString2 = "id=koko&age=25&occupation=translator&pay=200&stress=230000";
-        Map<String, String> params2 = Util.getParams(queryString2);
-
-        System.out.println(params1);
-        System.out.println(params2);
-
+        System.out.println(params);
 
     }
 
-    class Util {
-        static Map<String, String> getParams(String queryString) {
-            String[] bits = queryString.split("&");
+    static class Util {
+        static Map<String, String> getParamsFromUrl(String queryString) {
             Map<String, String> params = new LinkedHashMap<>();
 
-            for(String bit : bits) {
-                String[] bitBits = bit.split("=");
-                params.put(bitBits[0], bitBits[1]);
+            // Split the URL into path and query parts
+            String[] split = queryString.split("\\?", 2); // Limit to 2 splits
+            if (split.length < 2) {
+                // No query string present, return empty map
+                return params;
+            }
+
+            String query = split[1];
+            String[] pairs = query.split("&");
+
+            for (String pair : pairs) {
+                String[] keyValue = pair.split("=", 2); // Limit to 2 splits to handle missing values
+                if (keyValue.length == 2) {
+                    params.put(keyValue[0], keyValue[1]);
+                } else if (keyValue.length == 1) {
+                    params.put(keyValue[0], "");
+                }
             }
 
             return params;
