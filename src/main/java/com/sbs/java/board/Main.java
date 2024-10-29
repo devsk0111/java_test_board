@@ -50,7 +50,7 @@ public class Main {
                 Map<String, String> params = rq.getParams();
 
                 int id = 0;
-                try { // 유효성 검사하기 
+                try { // 유효성 검사하기
                     id = Integer.parseInt(params.get("id")); // int id는 가져오고 싶은 숫자를 가져온다
                 } catch (NumberFormatException e) {
                     System.out.println("id를 정수 형태로 입력해주세요");
@@ -76,20 +76,39 @@ public class Main {
                 System.out.printf("게시물 content : %s\n", article.content);
             }
 
-            else if (rq.getUrlPath().equals("usr/articles/list")) {
+            else if (rq.getUrlPath().equals("usr/article/list")) {
+
+                Map<String, String> params = rq.getParams();
+
+                boolean orderByIdDesc = true;
 
                 if (articles.isEmpty()) {
                     System.out.println("게시물 업슈");
                     continue;
                 }
 
+                if(params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+                    orderByIdDesc = false;
+                }
+
                 System.out.println("== 게시물 리스트 ==");
                 System.out.println("---------------------");
                 System.out.println("|  번호  |   제목     |");
-                for (int i = articles.size() -1 ; i >= 0 ; i--) {
-                    Article article = articles.get(i);
-                    System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
+
+                if (orderByIdDesc) { // idAsc가 없으면 기본값인 idDesc(내림차순)
+                    for (int i = articles.size() -1 ; i >= 0 ; i--) {
+                        Article article = articles.get(i);
+                        System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
+
+                    }
                 }
+
+                else {
+                    for(Article article : articles) {
+                        System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
+                    }
+                }
+
                 System.out.println("---------------------");
 
 
