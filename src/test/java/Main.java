@@ -3,13 +3,22 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        Rq rq = new Rq("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&idName=박승근");
-        Map<String, String> params = rq.getParams();
-        System.out.println(params);
+        List<Article> articles = new ArrayList<>() {{
+            add(new Article(1, "제목 1", "내용 1"));
+            add(new Article(2, "제목 2", "자바잠바"));
+            add(new Article(3, "제목 3", "내용 3"));
+        }};
 
-        String urlPath = rq.getUrlPath();
-        System.out.println(urlPath);
+        String searchKeyword = "자바";
+        List<Article> filteredArticles = new ArrayList<>();
 
+        for (Article article : articles) {
+            if (article.title.contains(searchKeyword) || article.content.contains(searchKeyword)) { // contains(), indexOf(), matches()
+                filteredArticles.add(article);
+            }
+        }
+
+        System.out.println(filteredArticles);
     }
 }
 
@@ -62,6 +71,23 @@ class Util {
 
     static String getUrlPathFromUrl(String url) {
         return url.split("\\?", 2)[0];
+    }
+}
+
+class Article { //extends Object
+    int id;
+    String title;
+    String content;
+
+    Article(int id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        return "{id : %d, title: \"%s\"}".formatted(id, title);
     }
 }
 
