@@ -3,9 +3,12 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        Map<String, String> params = Util.getParamsFromUrl("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&idName=박승근");
-
+        String url = "/usr/article/list?id=3&memberId=13&boardId=2&hit=73&idName=박승근";
+        Map<String, String> params = Util.getParamsFromUrl(url);
         System.out.println(params);
+
+        String urlPath = Util.getUrlPathFromUrl(url);
+        System.out.println(urlPath);
 
     }
 
@@ -33,6 +36,10 @@ public class Main {
             }
 
             return params;
+        }
+
+        static String getUrlPathFromUrl(String url) {
+            return url.split("\\?", 2)[0];
         }
     }
 }
