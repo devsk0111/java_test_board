@@ -1,12 +1,12 @@
 package com.sbs.java.board;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Main {
     static void testData(List<Article> articles) {
-        articles.add(new Article(1, "제목 1", "내용 1"));
-        articles.add(new Article(2, "제목 2", "내용 2"));
-        articles.add(new Article(3, "제목 3", "내용 3"));
+        IntStream.rangeClosed(1, 100)
+                .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
     }
 
     public static void main(String[] args) {
