@@ -3,43 +3,61 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        String url = "/usr/article/list?id=3&memberId=13&boardId=2&hit=73&idName=박승근";
-        Map<String, String> params = Util.getParamsFromUrl(url);
+        Rq rq = new Rq("/usr/article/list?id=3&memberId=13&boardId=2&hit=73&idName=박승근");
+        Map<String, String> params = rq.getParams();
         System.out.println(params);
 
-        String urlPath = Util.getUrlPathFromUrl(url);
+        String urlPath = rq.getUrlPath();
         System.out.println(urlPath);
 
     }
+}
 
-    static class Util {
-        static Map<String, String> getParamsFromUrl(String queryString) {
-            Map<String, String> params = new LinkedHashMap<>();
+class Rq {
+    String url;
 
-            // Split the URL into path and query parts
-            String[] split = queryString.split("\\?", 2); // Limit to 2 splits
-            if (split.length < 2) {
-                // No query string present, return empty map
-                return params;
-            }
+    Rq(String url) {
+        this.url = url;
+    }
 
-            String query = split[1];
-            String[] pairs = query.split("&");
 
-            for (String pair : pairs) {
-                String[] keyValue = pair.split("=", 2); // Limit to 2 splits to handle missing values
-                if (keyValue.length == 2) {
-                    params.put(keyValue[0], keyValue[1]);
-                } else if (keyValue.length == 1) {
-                    params.put(keyValue[0], "");
-                }
-            }
+    public Map<String, String> getParams() {
+        return Util.getParamsFromUrl(url);
+    }
 
+    public String getUrlPath() {
+        return Util.getUrlPathFromUrl(url);
+    }
+}
+
+class Util {
+    static Map<String, String> getParamsFromUrl(String queryString) {
+        Map<String, String> params = new LinkedHashMap<>();
+
+        // Split the URL into path and query parts
+        String[] split = queryString.split("\\?", 2); // Limit to 2 splits
+        if (split.length < 2) {
+            // No query string present, return empty map
             return params;
         }
 
-        static String getUrlPathFromUrl(String url) {
-            return url.split("\\?", 2)[0];
+        String query = split[1];
+        String[] pairs = query.split("&");
+
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=", 2); // Limit to 2 splits to handle missing values
+            if (keyValue.length == 2) {
+                params.put(keyValue[0], keyValue[1]);
+            } else if (keyValue.length == 1) {
+                params.put(keyValue[0], "");
+            }
         }
+
+        return params;
+    }
+
+    static String getUrlPathFromUrl(String url) {
+        return url.split("\\?", 2)[0];
     }
 }
+
