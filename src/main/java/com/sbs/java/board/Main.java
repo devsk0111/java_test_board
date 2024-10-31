@@ -1,6 +1,5 @@
 package com.sbs.java.board;
 
-import java.sql.Array;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -29,33 +28,16 @@ public class Main {
             Rq rq = new Rq(cmd);
 
             if (rq.getUrlPath().equals("/usr/article/write")) {
-                System.out.println("== 게시물 작성 ==");
-                System.out.print("제목 : ");
-                String title = sc.nextLine();
-
-                System.out.println("내용 : ");
-                String content = sc.nextLine();
-
-                int id = ++lastArticleId;
-
-                Article article = new Article(id, title, content);// 게시물 객체 생성
-
-                articles.add(article);
-
-                System.out.printf("%d번째 계시물, \"%s\"의 내용이 저장 되었습니다\n", article.id, article.title);
-                System.out.println("생성된 게시물 객체 : " + article);
-
+                actionUsrArticleWrite(sc, lastArticleId, articles);
+                lastArticleId++;
             }
-
             else if (rq.getUrlPath().equals("/usr/articles/detail")) {
                 actionUsrArticleDetail(rq, articles);
             }
-
             else if (rq.getUrlPath().equals("/usr/article/list")) {
 
                 actionUsrArticleList(rq, articles);
             }
-
             else if (rq.getUrlPath().equalsIgnoreCase("exit")) {
 
                 break;
@@ -67,6 +49,24 @@ public class Main {
         }
         System.out.println("== Exit Dashboard ==");
         sc.close();
+    }
+
+    static void actionUsrArticleWrite(Scanner sc, int lastArticleId, List<Article> articles) { //lastArticleId는 지역변수
+        System.out.println("== 게시물 작성 ==");
+        System.out.print("제목 : ");
+        String title = sc.nextLine();
+
+        System.out.println("내용 : ");
+        String content = sc.nextLine();
+
+        int id = ++lastArticleId;
+
+        Article article = new Article(id, title, content);// 게시물 객체 생성
+
+        articles.add(article);
+
+        System.out.printf("%d번째 계시물, \"%s\"의 내용이 저장 되었습니다\n", article.id, article.title);
+        System.out.println("생성된 게시물 객체 : " + article);
     }
 
     static void actionUsrArticleDetail(Rq rq, List<Article> articles) {
