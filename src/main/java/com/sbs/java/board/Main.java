@@ -31,7 +31,7 @@ public class Main {
                 actionUsrArticleWrite(sc, lastArticleId, articles);
                 lastArticleId++;
             }
-            else if (rq.getUrlPath().equals("/usr/articles/detail")) {
+            else if (rq.getUrlPath().equals("/usr/article/detail")) {
                 actionUsrArticleDetail(rq, articles);
             }
             else if (rq.getUrlPath().equals("/usr/article/list")) {
@@ -39,24 +39,62 @@ public class Main {
                 actionUsrArticleList(rq, articles);
             }
             else if (rq.getUrlPath().equalsIgnoreCase("exit")) {
-
                 break;
             }
-
+            else if (rq.getUrlPath().equals("/usr/article/modify")) {
+                actionUsrArticleModify(sc, rq, articles);
+            }
             else {
-                System.out.printf("명령어: %s\n그런 명령어 없어요 ㅡ_ㅡ\n", cmd);
+                System.out.printf("명령어: %s 존재하지 않습니다.\n", cmd);
             }
         }
         System.out.println("== Exit Dashboard ==");
         sc.close();
     }
 
-    static void actionUsrArticleWrite(Scanner sc, int lastArticleId, List<Article> articles) { //lastArticleId는 지역변수
-        System.out.println("== 게시물 작성 ==");
-        System.out.print("제목 : ");
+    static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
+        Map<String, String> params = rq.getParams();
+        int id = 0;
+
+        try { // 유효성 검사하기
+            id = Integer.parseInt(params.get("id")); // int id는 가져오고 싶은 숫자를 가져온다
+        } catch (NumberFormatException e) {
+            System.out.println("id를 정수 형태로 입력해주세요");
+            return;
+        }
+
+        if (articles.isEmpty()) { //유효성 검사
+            System.out.println("게시물 존재하지 않습니다?");
+            return; // 밑에 내용 스킵
+        }
+
+        if(id > articles.size()) {
+            System.out.println("해당 게시물 존재하지 않습니다");
+            return;
+        }
+        Article article = articles.get(id - 1);
+
+        System.out.println("== %d번째 게시물 수정 ==");
+        System.out.print("제목: ");
         String title = sc.nextLine();
 
-        System.out.println("내용 : ");
+        System.out.println("내용:");
+        String content = sc.nextLine();
+
+        article.title = title;
+        article.content = content;
+
+        System.out.printf("%d번째 계시물, \"%s\"의 내용이 수정 되었습니다\n", article.id, article.title);
+
+    }
+
+
+    static void actionUsrArticleWrite(Scanner sc, int lastArticleId, List<Article> articles) { //lastArticleId는 지역변수
+        System.out.println("== 게시물 작성 ==");
+        System.out.print("제목: ");
+        String title = sc.nextLine();
+
+        System.out.println("내용: ");
         String content = sc.nextLine();
 
         int id = ++lastArticleId;
@@ -81,7 +119,7 @@ public class Main {
         }
 
         if (articles.isEmpty()) { //유효성 검사
-            System.out.println("게시물 존재하지 않네요..?");
+            System.out.println("게시물 존재하지 않습니다?");
             return; // 밑에 내용 스킵
         }
 
@@ -100,9 +138,7 @@ public class Main {
     }
 
     static void actionUsrArticleList(Rq rq, List<Article> articles) {
-
         Map<String, String> params = rq.getParams();
-
         boolean orderByIdDesc = true;
 
         if (articles.isEmpty()) {
