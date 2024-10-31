@@ -38,11 +38,14 @@ public class Main {
 
                 actionUsrArticleList(rq, articles);
             }
-            else if (rq.getUrlPath().equalsIgnoreCase("exit")) {
-                break;
-            }
             else if (rq.getUrlPath().equals("/usr/article/modify")) {
                 actionUsrArticleModify(sc, rq, articles);
+            }
+            else if (rq.getUrlPath().equals("/usr/article/delete")) {
+                actionUsrArticleDelete(rq, articles);
+            }
+            else if (rq.getUrlPath().equalsIgnoreCase("exit")) {
+                break;
             }
             else {
                 System.out.printf("명령어: %s 존재하지 않습니다.\n", cmd);
@@ -51,6 +54,40 @@ public class Main {
         System.out.println("== Exit Dashboard ==");
         sc.close();
     }
+
+    static void actionUsrArticleDelete(Rq rq, List<Article> articles) {
+        Map<String, String> params = rq.getParams();
+        int id = 0;
+
+        try { // 유효성 검사하기
+            id = Integer.parseInt(params.get("id")); // int id는 가져오고 싶은 숫자를 가져온다
+        } catch (NumberFormatException e) {
+            System.out.println("id를 정수 형태로 입력해주세요");
+            return;
+        }
+
+        if (articles.isEmpty()) { //유효성 검사
+            System.out.println("게시물 존재하지 않습니다");
+            return; // 밑에 내용 스킵
+        }
+
+        if(id > articles.size()) {
+            System.out.println("해당 게시물 존재하지 않습니다");
+            return;
+        }
+
+        Article article = articleFindById(id, articles);
+
+        if(article == null) {
+            System.out.printf("%d번째 게시물은 존재하지 않습니다.\n", id);
+            return;
+        }
+
+        articles.remove(article);
+        System.out.printf("%d번째 게시물이 삭제되었습니다.\n", id);
+    }
+
+
 
     static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
         Map<String, String> params = rq.getParams();
@@ -68,11 +105,12 @@ public class Main {
             return; // 밑에 내용 스킵
         }
 
-        if(id > articles.size()) {
-            System.out.println("해당 게시물 존재하지 않습니다");
+        Article article = articleFindById(id, articles);
+
+        if (article == null) {
+            System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
             return;
         }
-        Article article = articles.get(id - 1);
 
         System.out.println("== %d번째 게시물 수정 ==");
         System.out.print("제목: ");
@@ -123,12 +161,12 @@ public class Main {
             return; // 밑에 내용 스킵
         }
 
-        if(id > articles.size() - 1) {
-            System.out.println("해당 게시물 존재하지 않습니다");
+        Article article = articleFindById(id, articles);
+
+        if (article == null) {
+            System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
             return;
         }
-
-        Article article = articles.get(id - 1);
 
         System.out.println("== 게시물 상세보기 ==");
 
@@ -185,10 +223,16 @@ public class Main {
 
 
     }
+
+    static Article articleFindById(int id, List<Article> articles) {
+        for(Article article : articles) {
+            if(article.id == id) {
+                return article;
+            }
+        }
+    return null;
+    }
 }
-
-
-
 
 class Article { //extends Object
     int id;
