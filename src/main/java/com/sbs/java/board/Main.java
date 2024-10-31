@@ -4,15 +4,16 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class Main {
-    static void testData(List<Article> articles) {
+    static int lastArticleId = 0;
+    static List<Article> articles = new ArrayList<>();
+
+    static void testData() {
         IntStream.rangeClosed(1, 100)
                 .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
     }
 
     public static void main(String[] args) {
-        List<Article> articles = new ArrayList<>();
-        testData(articles);
-        int lastArticleId = 0;
+        testData();
 
         if(!articles.isEmpty()) {
             lastArticleId = articles.get(articles.size() - 1).id;
@@ -28,21 +29,20 @@ public class Main {
             Rq rq = new Rq(cmd);
 
             if (rq.getUrlPath().equals("/usr/article/write")) {
-                actionUsrArticleWrite(sc, lastArticleId, articles);
-                lastArticleId++;
+                actionUsrArticleWrite(sc);
             }
             else if (rq.getUrlPath().equals("/usr/article/detail")) {
-                actionUsrArticleDetail(rq, articles);
+                actionUsrArticleDetail(rq);
             }
             else if (rq.getUrlPath().equals("/usr/article/list")) {
 
-                actionUsrArticleList(rq, articles);
+                actionUsrArticleList(rq);
             }
             else if (rq.getUrlPath().equals("/usr/article/modify")) {
-                actionUsrArticleModify(sc, rq, articles);
+                actionUsrArticleModify(sc, rq);
             }
             else if (rq.getUrlPath().equals("/usr/article/delete")) {
-                actionUsrArticleDelete(rq, articles);
+                actionUsrArticleDelete(rq);
             }
             else if (rq.getUrlPath().equalsIgnoreCase("exit")) {
                 break;
@@ -55,7 +55,7 @@ public class Main {
         sc.close();
     }
 
-    static void actionUsrArticleDelete(Rq rq, List<Article> articles) {
+    static void actionUsrArticleDelete(Rq rq) {
         Map<String, String> params = rq.getParams();
         int id = 0;
 
@@ -76,7 +76,7 @@ public class Main {
             return;
         }
 
-        Article article = articleFindById(id, articles);
+        Article article = articleFindById(id);
 
         if(article == null) {
             System.out.printf("%d번째 게시물은 존재하지 않습니다.\n", id);
@@ -89,7 +89,7 @@ public class Main {
 
 
 
-    static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
+    static void actionUsrArticleModify(Scanner sc, Rq rq) {
         Map<String, String> params = rq.getParams();
         int id = 0;
 
@@ -105,7 +105,7 @@ public class Main {
             return; // 밑에 내용 스킵
         }
 
-        Article article = articleFindById(id, articles);
+        Article article = articleFindById(id);
 
         if (article == null) {
             System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -127,7 +127,7 @@ public class Main {
     }
 
 
-    static void actionUsrArticleWrite(Scanner sc, int lastArticleId, List<Article> articles) { //lastArticleId는 지역변수
+    static void actionUsrArticleWrite(Scanner sc) { //lastArticleId는 지역변수
         System.out.println("== 게시물 작성 ==");
         System.out.print("제목: ");
         String title = sc.nextLine();
@@ -145,7 +145,7 @@ public class Main {
         System.out.println("생성된 게시물 객체 : " + article);
     }
 
-    static void actionUsrArticleDetail(Rq rq, List<Article> articles) {
+    static void actionUsrArticleDetail(Rq rq) {
         Map<String, String> params = rq.getParams();
 
         int id = 0;
@@ -161,7 +161,7 @@ public class Main {
             return; // 밑에 내용 스킵
         }
 
-        Article article = articleFindById(id, articles);
+        Article article = articleFindById(id);
 
         if (article == null) {
             System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
@@ -175,7 +175,7 @@ public class Main {
         System.out.printf("게시물 content : %s\n", article.content);
     }
 
-    static void actionUsrArticleList(Rq rq, List<Article> articles) {
+    static void actionUsrArticleList(Rq rq) {
         Map<String, String> params = rq.getParams();
         boolean orderByIdDesc = true;
 
@@ -224,7 +224,7 @@ public class Main {
 
     }
 
-    static Article articleFindById(int id, List<Article> articles) {
+    static Article articleFindById(int id) {
         for(Article article : articles) {
             if(article.id == id) {
                 return article;
