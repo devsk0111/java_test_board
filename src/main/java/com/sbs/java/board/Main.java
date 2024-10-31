@@ -1,5 +1,7 @@
 package com.sbs.java.board;
 
+import com.sbs.java.board.container.Container;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -19,17 +21,17 @@ public class Main {
             lastArticleId = articles.get(articles.size() - 1).id;
         }
 
-        Scanner sc = new Scanner(System.in);
+
         System.out.println("== Start Dashboard ==");
 
         while(true) {
             System.out.print("명령: ");
-            String cmd = sc.nextLine();
+            String cmd = Container.scanner.nextLine();
 
             Rq rq = new Rq(cmd);
 
             if (rq.getUrlPath().equals("/usr/article/write")) {
-                actionUsrArticleWrite(sc);
+                actionUsrArticleWrite();
             }
             else if (rq.getUrlPath().equals("/usr/article/detail")) {
                 actionUsrArticleDetail(rq);
@@ -39,7 +41,7 @@ public class Main {
                 actionUsrArticleList(rq);
             }
             else if (rq.getUrlPath().equals("/usr/article/modify")) {
-                actionUsrArticleModify(sc, rq);
+                actionUsrArticleModify(rq);
             }
             else if (rq.getUrlPath().equals("/usr/article/delete")) {
                 actionUsrArticleDelete(rq);
@@ -52,7 +54,7 @@ public class Main {
             }
         }
         System.out.println("== Exit Dashboard ==");
-        sc.close();
+        Container.scanner.close();
     }
 
     static void actionUsrArticleDelete(Rq rq) {
@@ -89,7 +91,7 @@ public class Main {
 
 
 
-    static void actionUsrArticleModify(Scanner sc, Rq rq) {
+    static void actionUsrArticleModify(Rq rq) {
         Map<String, String> params = rq.getParams();
         int id = 0;
 
@@ -114,10 +116,10 @@ public class Main {
 
         System.out.println("== %d번째 게시물 수정 ==");
         System.out.print("제목: ");
-        String title = sc.nextLine();
+        String title = Container.scanner.nextLine();
 
         System.out.println("내용:");
-        String content = sc.nextLine();
+        String content = Container.scanner.nextLine();
 
         article.title = title;
         article.content = content;
@@ -127,13 +129,13 @@ public class Main {
     }
 
 
-    static void actionUsrArticleWrite(Scanner sc) { //lastArticleId는 지역변수
+    static void actionUsrArticleWrite() { //lastArticleId는 지역변수
         System.out.println("== 게시물 작성 ==");
         System.out.print("제목: ");
-        String title = sc.nextLine();
+        String title = Container.scanner.nextLine();
 
         System.out.println("내용: ");
-        String content = sc.nextLine();
+        String content = Container.scanner.nextLine();
 
         int id = ++lastArticleId;
 
