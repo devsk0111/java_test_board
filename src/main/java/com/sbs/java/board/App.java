@@ -8,8 +8,13 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 public class App {
-     int lastArticleId = 0;
-     List<Article> articles = new ArrayList<>();
+     int lastArticleId; // 인턴스에 직접적으로 변수 놓는 것은 좋지 못하다
+     List<Article> articles;
+
+     public App(){ //생성자 매서드로 만들기
+         lastArticleId = 0;
+         articles = new ArrayList<>();
+     }
 
     void testData() {
         IntStream.rangeClosed(1, 100)
