@@ -1,4 +1,4 @@
-package com.sbs.java.board;
+package com.sbs.java.board.article;
 
 class Article { //extends Object
     int id;
