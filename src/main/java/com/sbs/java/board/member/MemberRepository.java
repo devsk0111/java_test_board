@@ -1,5 +1,7 @@
 package com.sbs.java.board.member;
 
+import com.sbs.java.board.article.Article;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,4 +19,5 @@ public class MemberRepository {
         members.add(member);
         return id;
     }
+
 }

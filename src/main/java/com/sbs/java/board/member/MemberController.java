@@ -1,8 +1,6 @@
 package com.sbs.java.board.member;
 
 import com.sbs.java.board.container.Container;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MemberController {
@@ -15,6 +13,8 @@ public class MemberController {
 
     public MemberController() {
         memberService = Container.memberService;
+
+        memberService.testData();
     }
 
     public void doJoin() {
