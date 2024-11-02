@@ -34,6 +34,13 @@ public class MemberController {
                 continue;
             }
 
+            Member member = memberService.findByUserId(userId);
+
+            if (member != null) {
+                System.out.printf("%s는 존재하는 아이디입니다. 다시 입력해주세요.", userId);
+                continue;
+            }
+
             break;
 
         }

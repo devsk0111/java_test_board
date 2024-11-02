@@ -20,4 +20,13 @@ public class MemberRepository {
         return id;
     }
 
+    public Member findByUserId(String userId) {
+        for (Member member : members) {
+            if(member.getUserId().equals(userId)) {
+                return member;
+            }
+        }
+
+        return null;
+    }
 }

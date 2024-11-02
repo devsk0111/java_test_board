@@ -20,4 +20,8 @@ public class MemberService {
         IntStream.rangeClosed(1, 10)
                 .forEach(i -> join("user" + i, "user" + i, "user" + i));
     }
+
+    public Member findByUserId(String userId) {
+        return memberRepository.findByUserId(userId);
+    }
 }
