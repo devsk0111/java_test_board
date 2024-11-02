@@ -57,9 +57,9 @@ public class ArticleController {
 
         System.out.println("== 게시물 상세보기 ==");
 
-        System.out.printf("게시물 id : %d\n", article.id);
-        System.out.printf("게시물 title : %s\n", article.title);
-        System.out.printf("게시물 content : %s\n", article.content);
+        System.out.printf("게시물 id : %d\n", article.getId());
+        System.out.printf("게시물 title : %s\n", article.getTitle());
+        System.out.printf("게시물 content : %s\n", article.getContent());
     }
 
     public void showList(Rq rq) {
@@ -75,7 +75,7 @@ public class ArticleController {
 
 
         for(Article article : articles) {
-            System.out.printf("|   %d   |   %s   |\n", article.id, article.title);
+            System.out.printf("|   %d   |   %s   |\n", article.getId(), article.getTitle());
         }
 
         System.out.println("---------------------");
@@ -116,7 +116,7 @@ public class ArticleController {
 
         articleService.modify(id, title, content);
 
-        System.out.printf("%d번째 계시물, \"%s\"의 내용이 수정 되었습니다\n", article.id, article.title);
+        System.out.printf("%d번째 계시물, \"%s\"의 내용이 수정 되었습니다\n", article.getId(), article.getTitle());
 
     }
 

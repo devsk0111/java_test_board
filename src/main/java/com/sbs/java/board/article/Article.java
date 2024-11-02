@@ -1,18 +1,13 @@
 package com.sbs.java.board.article;
 
-class Article { //extends Object
-    int id;
-    String title;
-    String content;
+import lombok.*;
 
-    Article(int id, String title, String content) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-    }
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class Article { //extends Object
+    private int id;
+    private String title;
+    private String content;
 
-    @Override
-    public String toString() {
-        return "{id : %d, title: \"%s\"}".formatted(id, title);
-    }
 }
