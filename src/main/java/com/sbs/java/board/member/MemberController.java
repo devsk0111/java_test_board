@@ -10,9 +10,11 @@ public class MemberController {
     private int lastId;
     private List<Member> members;
 
+    private MemberService memberService;
+
+
     public MemberController() {
-        lastId = 0;
-        members = new ArrayList<>();
+        memberService = Container.memberService;
     }
 
     public void doJoin() {
@@ -81,10 +83,8 @@ public class MemberController {
             break;
         }
 
-        int id = ++lastId;
+        int id = memberService.join(userId, password, name);
 
-        Member member = new Member(id, userId, password, name);
-        members.add(member);
 
         System.out.printf("%d번 회원이 생성되었습니다.\n", id);
     }
