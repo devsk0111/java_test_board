@@ -2,14 +2,18 @@ package com.sbs.java.board;
 
 import com.sbs.java.board.article.ArticleController;
 import com.sbs.java.board.container.Container;
+import com.sbs.java.board.member.MemberController;
 
 public class App {
 
     ArticleController articleController;
+    MemberController memberController;
 
     public App() {
         articleController = Container.articleController;
+        memberController = Container.memberController;
     }
+
 
     void run() {
 
@@ -20,7 +24,13 @@ public class App {
             String cmd = Container.scanner.nextLine();
             Rq rq = new Rq(cmd);
 
-            if (rq.getUrlPath().equals("/usr/article/write")) {
+            if (rq.getUrlPath().equals("/usr/member/join")) {
+                memberController.doJoin();
+            }
+
+            //Article Logic
+
+            else if (rq.getUrlPath().equals("/usr/article/write")) {
                 articleController.doWrite();
             }
             else if (rq.getUrlPath().equals("/usr/article/detail")) {
