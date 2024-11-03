@@ -95,4 +95,64 @@ public class MemberController {
 
         System.out.printf("%d번 회원이 생성되었습니다.\n", id);
     }
+
+    public void doLogin() {
+        String userId;
+        String password;
+        Member member;
+
+        System.out.println("== 로그인 ==");
+
+        while (true) {
+            System.out.print("로그인 아이디 :");
+            userId = Container.scanner.nextLine();
+
+            if (userId.trim().isEmpty()) {
+                System.out.println("로그인 아이디를 입력해주세요.");
+                continue;
+            }
+
+            member = memberService.findByUserId(userId);
+
+            if (member == null) {
+                System.out.printf("\"%s\"는 존재하지 않은 아이디입니다. 다시 입력해주세요.", userId);
+                continue;
+            }
+
+            break;
+        }
+
+        int tryMaxCount = 3;
+        int tryCount = 0;
+        boolean exit = false;
+
+
+        while (true) {
+
+            if (tryCount == tryMaxCount) {
+                System.out.println("모든 입력 기회를 소진했습니다. 다시 로그인 해주십시오.");
+                exit = true;
+                break;
+            }
+
+            System.out.print("로그인 비밀번호 :");
+            password = Container.scanner.nextLine();
+
+            if (password.trim().isEmpty()) {
+                System.out.println("비밀번호 입력해주세요");
+                continue;
+            }
+            if (!member.getUserPassword().equals(password)) {
+                System.out.println("비밃번호가 일치 하지 않습니다");
+                tryCount ++;
+                System.out.printf("%d번의 기회 중 %d번 틀렸습니다\n",tryMaxCount, tryCount);
+                continue;
+            }
+            break;
+
+        }
+        if (!exit) {
+            System.out.printf("\"%s\"님 로그인 했습니다\n", member.getName());
+        }
+    }
 }
