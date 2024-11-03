@@ -1,5 +1,6 @@
 package com.sbs.java.board.member;
 
+import com.sbs.java.board.Rq;
 import com.sbs.java.board.container.Container;
 import java.util.List;
 
@@ -96,7 +97,7 @@ public class MemberController {
         System.out.printf("%d번 회원이 생성되었습니다.\n", id);
     }
 
-    public void doLogin() {
+    public void doLogin(Rq rq) {
         String userId;
         String password;
         Member member;
@@ -152,6 +153,8 @@ public class MemberController {
 
         }
         if (!exit) {
+
+            rq.setSessionAttr("MemberLogin", member);
             System.out.printf("\"%s\"님 로그인 했습니다\n", member.getName());
         }
     }
